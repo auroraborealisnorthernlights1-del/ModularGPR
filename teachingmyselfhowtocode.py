@@ -1,8 +1,21 @@
 import torch
 
-def rbf_kernel(x1, x2): 
-    sq_dist = (x1 - x2) ** 2
-    return torch.exp(-0.5 * sq_dist)
 
-print(rbf_kernel(torch.tensor(2.0), torch.tensor(2.0)))
-print(rbf.kernel(torch.tensor(0.0), torch.tensor(10.0)))
+
+# This is a 1D vectorized RBF Covariance Matrix :)
+def rbf_covariance(X):
+    return  torch.exp((-1/2)*(X.unsqueeze(1) - X.unsqueeze(0)) ** 2)
+
+X = torch.tensor([4.0, 5.0])
+print(rbf_covariance(X))
+
+
+# also something thats cool is that "X.unsqueeze(1) - X.unsqueeze(0)" works no matter how big the matrix is
+
+# This is a Multi-Dimensional vectorized RBF Covariance Matrix :)
+
+def multiDrbf_covariance(Y):
+    return  torch.exp((-1/2)*((Y.unsqueeze(1) - Y.unsqueeze(0)) ** 2).sum(dim=-1))
+
+Y = torch.tensor([[4.0, 5.0],[7.0, 9.0]])
+print(multiDrbf_covariance(Y))
